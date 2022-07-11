@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json 
+name: weatherbench-i-ds12
+type: computeinstance
+size: STANDARD_DS12_v2
+schedules:
+  compute_start_stop:
+    - action: stop
+      trigger: 
+        type: recurrence
+        interval: 1
+        frequency: day
+        start_time: "2022-06-14T20:00:00"
+        time_zone: UTC
+
