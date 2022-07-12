@@ -1,4 +1,3 @@
-from .score import *
 import os
 import numpy as np
 import xarray as xr
@@ -7,6 +6,8 @@ import tensorflow.keras as keras
 from tensorflow.keras.layers import Input, Dropout, Conv2D, Lambda, LeakyReLU
 import tensorflow.keras.backend as K
 from configargparse import ArgParser
+
+from score import *
 
 def limit_mem():
     """Limit TF GPU mem usage"""

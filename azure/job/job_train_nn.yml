@@ -1,0 +1,34 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+command: |
+  conda env list
+  conda list
+  python train_nn.py \
+      --datadir ${{inputs.datadir}} \
+      --model_save_fn /outputs/models/1 \
+      --pred_save_fn ${{outputs.pred_save_folder}}cnn_3d.nc \
+      --vars [z, t] \
+      --filters [64, 64, 64, 64, 2] \
+      --kernels [5, 5, 5, 5, 5] \
+      --lead_time ${{inputs.lead_time}}
+code: ../../src
+environment: 
+  image: continuumio/miniconda3:latest
+  conda_file: conda-environment.yml
+compute: azureml:gpu-cluster
+inputs:
+  datadir: 
+    path: azureml://datastores/azuregigdatalake_bronze/paths/nc/TUM/WeatherBench/5.625deg/
+    type: uri_folder
+    mode: ro_mount
+  # vars: "[z, t]"
+  # filters: "[64, 64, 64, 64, 2]"
+  # kernels: "[5, 5, 5, 5, 5]"
+  lead_time: 72
+outputs:
+  pred_save_folder:
+    path: azureml://datastores/lcmgexplorestorage/paths/tmp/WeatherBench/baselines/
+    type: uri_folder
+    mode: rw_mount
+display_name: WeatherBench-train_nn
+experiment_name: WeatherBench-train_nn
+description: Demo - how to adapt weatherbench
